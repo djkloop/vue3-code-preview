@@ -34,7 +34,8 @@ export default defineComponent({
     <div id="app">
     <!-- 动态组件 -->
         <div>11111</div>
-        <t-button />
+        <div>flag -> {{  flag }}</div>
+        <t-button @click="useChangeFlag"/>
     </div>
     </template>
     <script>
@@ -46,17 +47,36 @@ export default defineComponent({
         version: '2.x'
       };
     },
+    setup() {
+      let flag = ref(false);
+      flag.value = true;
+
+      onMounted(()=> {
+        console.log('onMounted');
+      })
+
+      const useChangeFlag = () => {
+        flag.value = !flag.value;
+        useSetupPrintFlag();
+      }
+
+      const useSetupPrintFlag = () => {
+        console.log(flag);
+      }
+
+      return {
+        flag,
+        useChangeFlag
+      }
+    },
     created() {
       this.enterLoading();
     },
     methods: {
       enterLoading() {
         this.loading = true;
-        console.log('enterLoading');
-      },
-      enterIconLoading() {
-        this.iconLoading = { delay: 1000 };
-      },
+        console.log('option created methdos', this.flag);
+      }
     },
     };
     </script>
