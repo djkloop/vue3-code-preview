@@ -1,11 +1,11 @@
-import { defineConfig } from "vite";
-import { resolve } from 'path';
-import vue from "@vitejs/plugin-vue";
-import WindiCSS from "vite-plugin-windicss";
-import vueJsx from "@vitejs/plugin-vue-jsx";
+import { resolve } from 'path'
+import { defineConfig } from 'vite'
+import vue from '@vitejs/plugin-vue'
+import WindiCSS from 'vite-plugin-windicss'
+import vueJsx from '@vitejs/plugin-vue-jsx'
 
 function pathResolve(dir) {
-  return resolve(process.cwd(), '.', dir);
+  return resolve(process.cwd(), '.', dir)
 }
 
 // https://vitejs.dev/config/
@@ -16,12 +16,12 @@ export default defineConfig({
     alias: [
       {
         find: 'vue',
-        replacement: "vue/dist/vue.esm-bundler.js"
+        replacement: 'vue/dist/vue.esm-bundler.js',
       },
       {
         find: /\/@\//,
-        replacement: pathResolve('src') + '/',
+        replacement: `${pathResolve('src')}/`,
       },
-    ]
-  }
-});
+    ],
+  },
+})

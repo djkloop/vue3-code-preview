@@ -1,5 +1,5 @@
-import { compile } from "tiny-sass-compiler/dist/tiny-sass-compiler.esm-browser.prod.js";
-import { isEmpty } from "../index";
+import { compile } from 'tiny-sass-compiler/dist/tiny-sass-compiler.esm-browser.prod.js'
+import { isEmpty } from '../index'
 // import lessLoader from "../style-loader/lessLoader";
 
 /* styles
@@ -13,24 +13,25 @@ import { isEmpty } from "../index";
     src?: string;
     scoped?: boolean;
     module?: string | boolean;
-  }*/
+  } */
 
-const nonWhitespaceRE = /\S+/;
+const nonWhitespaceRE = /\S+/
 
 export async function genStyleInjectionCode(styles, parentId) {
-  let styleCodes = [];
+  const styleCodes = []
 
   // // 添加组件 reset 样式
   // styleCodes.push(addRestStyle(parentId));
 
   // 不支持 css link src为空，且 <style>标签内容不为空
-  const isNotEmptyStyle = (style) =>
-    !style.src && nonWhitespaceRE.test(style.content);
+  const isNotEmptyStyle = style =>
+    !style.src && nonWhitespaceRE.test(style.content)
 
-  await asyncForEach(styles, async (style) => {
-    if (!isNotEmptyStyle(style)) {
-      console.log(`the css link  or style content empty is unsupported !`);
-    }
+  await asyncForEach(styles, async(style) => {
+    if (!isNotEmptyStyle(style))
+      // eslint-disable-next-line no-continue
+      console.log('the css link  or style content empty is unsupported !')
+
     // scss compiler
     // else if (style.lang === "scss" || style.lang === "sass") {
     //   const result = sassCompiler(style.content.trim());
@@ -52,18 +53,17 @@ export async function genStyleInjectionCode(styles, parentId) {
     //   console.log(`the ${style.lang} is unsupported !`);
     // } else
     if (isEmpty(style.lang)) {
-      style.css = rootParentIdMixIn(style.content.trim(), parentId);
-      styleCodes.push(style);
+      style.css = rootParentIdMixIn(style.content.trim(), parentId)
+      styleCodes.push(style)
     }
-  });
+  })
 
-  return styleCodes;
+  return styleCodes
 }
 
 async function asyncForEach(array, callback) {
-  for (let index = 0; index < array.length; index++) {
-    await callback(array[index], index, array);
-  }
+  for (let index = 0; index < array.length; index++)
+    await callback(array[index], index, array)
 }
 
 // 样式增加 组件ID 作为根元素，进行样式隔离
@@ -72,23 +72,24 @@ function rootParentIdMixIn(cssText, parentId) {
 #${parentId}.result-box {
   ${cssText}
 }  
-`;
+`
   // 使用 sass 进行处理 格式化
-  const result = sassCompiler(rootMixin);
-  return result.code;
+  const result = sassCompiler(rootMixin)
+  return result.code
 }
 
 function sassCompiler(template) {
   try {
-    const result = compile(template);
-    return result;
-  } catch (error) {
+    const result = compile(template)
+    return result
+  }
+  catch (error) {
     console.log(
-      "%c sassCompiler:",
-      "color: #FFFFFF; background: #f5222d; font-size: 13px;",
-      error
-    );
-    return { code: "" };
+      '%c sassCompiler:',
+      'color: #FFFFFF; background: #f5222d; font-size: 13px;',
+      error,
+    )
+    return { code: '' }
   }
 }
 
