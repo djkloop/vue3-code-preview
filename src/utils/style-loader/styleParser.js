@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import { compile } from 'tiny-sass-compiler/dist/tiny-sass-compiler.esm-browser.prod.js'
 import { isEmpty } from '../index'
 // import lessLoader from "../style-loader/lessLoader";
@@ -29,7 +30,6 @@ export async function genStyleInjectionCode(styles, parentId) {
 
   await asyncForEach(styles, async(style) => {
     if (!isNotEmptyStyle(style))
-      // eslint-disable-next-line no-continue
       console.log('the css link  or style content empty is unsupported !')
 
     // scss compiler
